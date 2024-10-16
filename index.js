@@ -1,4 +1,5 @@
 const express = require('express')
+require('dotenv').config()
 const cors = require('cors')
 
 
@@ -89,7 +90,7 @@ app.delete('/api/notes/:id',(request,response)=>{
   response.status(204).end()
 })
 app.use(unknownEndpoint)
-const PORT=  3001
+const PORT= process.env.BACKEND_PORT
 app.listen(PORT)
 console.log(`Server running on port ${PORT}`)
 
