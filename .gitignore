@@ -1,3 +1,4 @@
 requests/
 terraform/
-.env
+.env*
+dist/
