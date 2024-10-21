@@ -21,7 +21,7 @@ mongoose.connect(url)
   noteSchema.set('toJSON',{
     transform :(document,returnedDocument)=>{
       returnedDocument.id = returnedDocument._id
-      delete  returnedDocument.id
+      delete  returnedDocument._id
       delete returnedDocument.__v
     }
   })

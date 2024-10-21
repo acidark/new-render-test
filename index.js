@@ -2,7 +2,7 @@ const express = require('express')
 require('dotenv').config()
 const cors = require('cors')
 
-const mongoose = require('mongoose')
+// const mongoose = require('mongoose')
 const Note = require('./models/note')
 
 
@@ -75,12 +75,12 @@ app.get('/api/notes',(request,response) => {
   })
 })
 
-const generateId = () => {
-   const maxId = notes.length > 0
-  ? Math.max(...notes.map(n=>Number(n.id)))
-  : 0
-  return String(maxId+1)
-  }
+// const generateId = () => {
+//    const maxId = notes.length > 0
+//   ? Math.max(...notes.map(n=>Number(n.id)))
+//   : 0
+//   return String(maxId+1)
+//   }
 app.post('/api/notes',(request,response)=> {
   const body = request.body
   if(!body.content){
@@ -89,26 +89,24 @@ app.post('/api/notes',(request,response)=> {
   })
   }
 
-  const note = {
+  const note = new Note({
     "content" : body.content,
     "important" : Boolean(body.important) || false,
-    "id" : generateId()
-  }
-  notes = notes.concat(note)
-  response.json(note)
-
+    // "id" : generateId()
+  })
+  note.save().then(savedNote =>{ 
+  response.json(savedNote)
+  })
 })
 app.get('/api/notes/:id',(request,response) => {
   const id = request.params.id
-  const note = notes.find(n=>n.id === id)
-
-  if (note) {
+  // const note = notes.find(n=>n.id === id)
+  Note.findById(id).then(note =>{
     response.json(note)
-  
-  } else {
-    // console.log('first')
-  response.status(404).end()
-  }
+  })
+  .catch(() => {
+    response.status(404).end()
+  })
 })
 // const app = http.createServer((request, response) => {
   // response.writeHead(200, { 'Content-Type': 'application/json' })
